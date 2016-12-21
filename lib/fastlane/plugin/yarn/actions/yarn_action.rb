@@ -8,16 +8,13 @@ module Fastlane
         package_path = params[:package_path]
 
         # create a new object from yarn helper
-        yarn = Helper::YarnHelper.new()
+        yarn = Helper::YarnHelper.new(package_path: package_path)
 
         # Check if yarn is installed
         yarn.check_install
 
-        # check for package.json file
-        yarn.check_package(package_path: package_path)
-
         # trigger command
-        yarn.trigger(command:command, task: task, package_path: package_path)
+        yarn.trigger(command:command, task: task)
       end
 
       def self.description

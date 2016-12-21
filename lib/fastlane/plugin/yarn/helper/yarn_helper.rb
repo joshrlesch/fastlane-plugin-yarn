@@ -8,27 +8,37 @@ module Fastlane
       attr_accessor :commands
       attr_accessor :package_path
 
-      # Run a certain action
-      def trigger(command: nil, task: nil, package_path: nil, print_command: true, print_command_output: true)
-        if package_path
-          Dir.chdir(File.dirname(package_path))
+      def initialize(package_path: nil)
+        self.package_path = package_path
+
+        if self.package_path
+          Dir.chdir(File.dirname(self.package_path))
         end
+      end
+
+      # Run a certain action
+      def trigger(command: nil, task: nil, print_command: true, print_command_output: true)
 
         command = ["yarn", command, task].compact.join(" ")
         Action.sh(command, print_command: print_command, print_command_output: print_command_output)
       end
 
       def check_install
+        check_package
+
+        UI.message("Checking yarn install and dependencies")
         begin
-          Action.sh('yarn --version', print_command: false, print_command_output: false)
+          Action.sh("yarn", print_command: true, print_command_output: true)
         rescue Errno::ENOENT => e
           UI.error("Yarn not installed, please install with Homebrew or npm.")
           raise e
         end
+
       end
 
-      def check_package(package_path: nil)
-        if package_path.nil?
+      def check_package()
+        UI.message("Checking for valid package.json")
+        unless self.package_path.nil?
           package_path = 'package.json'
         end
 

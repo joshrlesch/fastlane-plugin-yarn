@@ -1,0 +1,16 @@
+# OSX
+.DS_Store
+
+*.gem
+Gemfile.lock
+
+# Rubymine
+.idea/
+
+## Documentation cache and generated files:
+/.yardoc/
+/_yardoc/
+/doc/
+/rdoc/
+fastlane/README.md
+fastlane/report.xml

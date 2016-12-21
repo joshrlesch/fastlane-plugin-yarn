@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = %q{josh.r.lesch@gmail.com}
 
   spec.summary       = %q{Execute Yarn commands from your Fastfile}
-  # spec.homepage      = "https://github.com/<GITHUB_USERNAME>/fastlane-plugin-yarn"
+  spec.homepage      = "https://github.com/joshrlesch/fastlane-plugin-yarn"
   spec.license       = "MIT"
 
   spec.files         = Dir["lib/**/*"] + %w(README.md LICENSE)

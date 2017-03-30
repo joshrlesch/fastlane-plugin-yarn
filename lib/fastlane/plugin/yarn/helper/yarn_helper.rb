@@ -31,7 +31,8 @@ module Fastlane
 
         UI.message("Checking yarn install and dependencies")
         begin
-          Action.sh(self.yarn, print_command: true, print_command_output: true)
+          command = [self.yarn, "--version"].compact.join(" ")
+          Action.sh(command, print_command: true, print_command_output: true)
         rescue Errno::ENOENT => e
           UI.error("Yarn not installed, please install with Homebrew or npm.")
           raise e

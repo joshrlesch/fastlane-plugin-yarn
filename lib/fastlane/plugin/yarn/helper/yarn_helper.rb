@@ -21,7 +21,6 @@ module Fastlane
 
       # Run a certain action
       def trigger(command: nil, task: nil, print_command: true, print_command_output: true)
-
         command = [self.yarn, command, task].compact.join(" ")
         Action.sh(command, print_command: print_command, print_command_output: print_command_output)
       end
@@ -36,10 +35,9 @@ module Fastlane
           UI.error("Yarn not installed, please install with Homebrew or npm.")
           raise e
         end
-
       end
 
-      def check_package()
+      def check_package
         UI.message("Checking for valid package.json")
 
         if self.package_path.nil?
@@ -48,7 +46,7 @@ module Fastlane
           package_path = self.package_path
         end
 
-        unless File.exists?(package_path)
+        unless File.exist?(package_path)
           UI.error("Could not find package.json")
           raise Errno::ENOENT
         end

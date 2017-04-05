@@ -1,9 +1,13 @@
 describe Fastlane::Actions::YarnAction do
-  describe '#run' do
-    it 'prints a message' do
-      expect(Fastlane::UI).to receive(:message).with("The yarn plugin is working!")
+  describe 'yarn install action' do
+    it 'default use case' do
+      allow(FastlaneCore::FastlaneFolder).to receive(:path).and_return(nil)
 
-      Fastlane::Actions::YarnAction.run(nil)
+      result = Fastlane::FastFile.new.parse("lane :test do
+        yarn(task: 'install', package_path: 'spec/fixtures')
+      end").runner.execute(:test)
+
+      expect(result).to eq("cd spec && yarn install")
     end
   end
 end

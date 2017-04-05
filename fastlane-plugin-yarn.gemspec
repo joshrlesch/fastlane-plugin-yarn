@@ -1,4 +1,5 @@
 # coding: utf-8
+
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'fastlane/plugin/yarn/version'
@@ -6,10 +7,10 @@ require 'fastlane/plugin/yarn/version'
 Gem::Specification.new do |spec|
   spec.name          = 'fastlane-plugin-yarn'
   spec.version       = Fastlane::Yarn::VERSION
-  spec.author        = %q{Josh Lesch}
-  spec.email         = %q{josh.r.lesch@gmail.com}
+  spec.author        = 'Josh Lesch'
+  spec.email         = 'josh.r.lesch@gmail.com'
 
-  spec.summary       = %q{Execute Yarn commands from your Fastfile}
+  spec.summary       = 'Execute Yarn commands from your Fastfile'
   spec.homepage      = "https://github.com/joshrlesch/fastlane-plugin-yarn"
   spec.license       = "MIT"
 

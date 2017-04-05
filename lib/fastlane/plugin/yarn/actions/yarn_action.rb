@@ -2,7 +2,6 @@ module Fastlane
   module Actions
     class YarnAction < Action
       def self.run(params)
-        # UI.message("The yarn plugin is working!")
         task = params[:task]
         command = params[:command]
         package_path = params[:package_path]
@@ -14,7 +13,7 @@ module Fastlane
         yarn.check_install
 
         # trigger command
-        yarn.trigger(command:command, task: task)
+        yarn.trigger(command: command, task: task)
       end
 
       def self.description

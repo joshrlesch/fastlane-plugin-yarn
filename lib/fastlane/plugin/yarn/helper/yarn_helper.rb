@@ -28,11 +28,9 @@ module Fastlane
 
       def check_install
         check_package
-
-        UI.message("Checking yarn install and dependencies")
         begin
           command = [self.yarn, "--version"].compact.join(" ")
-          Action.sh(command, print_command: true, print_command_output: true)
+          Action.sh(command, print_command: false, print_command_output: false)
         rescue Errno::ENOENT => e
           UI.error("Yarn not installed, please install with Homebrew or npm.")
           raise e
@@ -45,8 +43,6 @@ module Fastlane
       end
 
       def check_package
-        UI.message("Checking for valid package.json")
-
         if self.package_path.nil?
           package_path = 'package.json'
         else

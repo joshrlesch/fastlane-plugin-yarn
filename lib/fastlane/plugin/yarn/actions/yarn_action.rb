@@ -12,15 +12,14 @@ module Fastlane
 
         # Check if yarn is installed
         yarn.check_install
-        yarn.install_dependencies
 
-        if command.downcase.eql? "install"
-          UI.message("Dependencies installed")
-          return
-        else
-          # trigger command
-          yarn.trigger(command: command, flags: flags, options: options)
+        if params[:auto_install_dependencies]
+          UI.message("Installign dependecies")
+          yarn.install_dependencies
         end
+
+        # trigger command
+        yarn.trigger(command: command, flags: flags, options: options)
       end
 
       def self.description
@@ -61,7 +60,13 @@ module Fastlane
                                        env_name: "YARN_OPTIONS",
                                        description: "Options to pass to Yarn",
                                        optional: true,
-                                       type: String)
+                                       type: String),
+          FastlaneCore::ConfigItem.new(key: :auto_install_dependencies,
+                                       env_name: "AUTO_INSTALL_DEPENDENCIES",
+                                       description: "Runs yarn install before executing any yarn command",
+                                       optional: true,
+                                       default_value: false,
+                                       is_string: false)
 
         ]
       end

@@ -2,8 +2,9 @@ module Fastlane
   module Actions
     class YarnAction < Action
       def self.run(params)
-        task = params[:task]
+        flags = params[:flags]
         command = params[:command]
+        options = params[:options]
         package_path = params[:package_path]
 
         # create a new object from yarn helper
@@ -12,8 +13,13 @@ module Fastlane
         # Check if yarn is installed
         yarn.check_install
 
+        if params[:auto_install_dependencies]
+          UI.message("Installign dependecies")
+          yarn.install_dependencies
+        end
+
         # trigger command
-        yarn.trigger(command: command, task: task)
+        yarn.trigger(command: command, flags: flags, options: options)
       end
 
       def self.description
@@ -35,9 +41,9 @@ module Fastlane
 
       def self.available_options
         [
-          FastlaneCore::ConfigItem.new(key: :task,
-                                       env_name: "YARN_TASK",
-                                       description: "Task you want Yarn to perform as listed in package.json file",
+          FastlaneCore::ConfigItem.new(key: :flags,
+                                       env_name: "YARN_FLAGS",
+                                       description: "Flags you want Yarn to perform as listed in package.json file",
                                        optional: true,
                                        type: String),
           FastlaneCore::ConfigItem.new(key: :command,
@@ -54,7 +60,13 @@ module Fastlane
                                        env_name: "YARN_OPTIONS",
                                        description: "Options to pass to Yarn",
                                        optional: true,
-                                       type: String)
+                                       type: String),
+          FastlaneCore::ConfigItem.new(key: :auto_install_dependencies,
+                                       env_name: "AUTO_INSTALL_DEPENDENCIES",
+                                       description: "Runs yarn install before executing any yarn command",
+                                       optional: true,
+                                       default_value: false,
+                                       is_string: false)
 
         ]
       end

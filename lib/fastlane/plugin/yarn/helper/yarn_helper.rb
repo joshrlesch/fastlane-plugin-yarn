@@ -4,8 +4,9 @@ module Fastlane
       # class methods that you define here become available in your action
       # as `Helper::YarnHelper.your_method`
 
-      attr_accessor :task
+      attr_accessor :flags
       attr_accessor :commands
+      attr_accessor :options
       attr_accessor :package_path
       attr_accessor :yarn
 
@@ -20,26 +21,28 @@ module Fastlane
       end
 
       # Run a certain action
-      def trigger(command: nil, task: nil, print_command: true, print_command_output: true)
-        command = [self.yarn, command, task].compact.join(" ")
+      def trigger(command: nil, flags: nil, options: nil, print_command: true, print_command_output: true)
+        command = [self.yarn, command, flags, options].compact.join(" ")
         Action.sh(command, print_command: print_command, print_command_output: print_command_output)
       end
 
       def check_install
         check_package
-
-        UI.message("Checking yarn install and dependencies")
         begin
-          Action.sh(self.yarn, print_command: true, print_command_output: true)
+          command = [self.yarn, "--version"].compact.join(" ")
+          Action.sh(command, print_command: false, print_command_output: false)
         rescue Errno::ENOENT => e
           UI.error("Yarn not installed, please install with Homebrew or npm.")
           raise e
         end
       end
 
-      def check_package
-        UI.message("Checking for valid package.json")
+      def install_dependencies
+        UI.message("Installing dependencies")
+        trigger(command: "install")
+      end
 
+      def check_package
         if self.package_path.nil?
           package_path = 'package.json'
         else

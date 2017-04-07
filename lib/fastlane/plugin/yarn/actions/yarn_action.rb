@@ -2,8 +2,9 @@ module Fastlane
   module Actions
     class YarnAction < Action
       def self.run(params)
-        task = params[:task]
+        flags = params[:flags]
         command = params[:command]
+        options = params[:options]
         package_path = params[:package_path]
 
         # create a new object from yarn helper
@@ -11,9 +12,15 @@ module Fastlane
 
         # Check if yarn is installed
         yarn.check_install
+        yarn.install_dependencies
 
-        # trigger command
-        yarn.trigger(command: command, task: task)
+        if command.downcase.eql? "install"
+          UI.message("Dependencies installed")
+          return
+        else
+          # trigger command
+          yarn.trigger(command: command, flags: flags, options: options)
+        end
       end
 
       def self.description
@@ -35,9 +42,9 @@ module Fastlane
 
       def self.available_options
         [
-          FastlaneCore::ConfigItem.new(key: :task,
-                                       env_name: "YARN_TASK",
-                                       description: "Task you want Yarn to perform as listed in package.json file",
+          FastlaneCore::ConfigItem.new(key: :flags,
+                                       env_name: "YARN_FLAGS",
+                                       description: "Flags you want Yarn to perform as listed in package.json file",
                                        optional: true,
                                        type: String),
           FastlaneCore::ConfigItem.new(key: :command,

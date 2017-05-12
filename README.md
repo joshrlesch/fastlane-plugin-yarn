@@ -18,10 +18,33 @@ When using the yarn action in your fastfile, it will install any dependencies th
 It will by default look for your package.json file in the root directory, or you can choose a different location.
 ```ruby
 yarn(
-  task: "test",
+  command: "test",
   package_path: "../package.json"
 )
 ```
+
+Yarn Options
+
+```
++---------------------------+---------------------------+---------------------------+---------+
+|                                        yarn Options                                         |
++---------------------------+---------------------------+---------------------------+---------+
+| Key                       | Description               | Env Var                   | Default |
++---------------------------+---------------------------+---------------------------+---------+
+| flags                     | Flags you want Yarn to    | YARN_FLAGS                |         |
+|                           | perform as listed in      |                           |         |
+|                           | package.json file         |                           |         |
+| command                   | Command you want Yarn to  | YARN_COMMAND              |         |
+|                           | perform, e.g. 'add' or    |                           |         |
+|                           | 'upgrade'                 |                           |         |
+| package_path              | Path to package.json file | PACKAGE_PATH              |         |
+| options                   | Options to pass to Yarn   | YARN_OPTIONS              |         |
+| auto_install_dependencies | Runs yarn install before  | AUTO_INSTALL_DEPENDENCIES | false   |
+|                           | executing any yarn        |                           |         |
+|                           | command                   |                           |         |
++---------------------------+---------------------------+---------------------------+---------+
+```
+
 ## Example
 
 Check out the [example `Fastfile`](fastlane/Fastfile) to see how to use this plugin. Try it by cloning the repo, running `fastlane install_plugins` and `bundle exec fastlane test`.

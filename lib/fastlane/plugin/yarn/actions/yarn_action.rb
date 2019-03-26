@@ -6,9 +6,10 @@ module Fastlane
         command = params[:command]
         options = params[:options]
         package_path = params[:package_path]
+        project_root = params[:project_root]
 
         # create a new object from yarn helper
-        yarn = Helper::YarnHelper.new(package_path: package_path)
+        yarn = Helper::YarnHelper.new(package_path: package_path, project_root: project_root)
 
         # Check if yarn is installed
         yarn.check_install
@@ -55,7 +56,14 @@ module Fastlane
                                        env_name: "PACKAGE_PATH",
                                        description: "Path to package.json file",
                                        optional: true,
-                                       type: String),
+                                       type: String,
+                                       conflicting_options: [:project_root]),
+          FastlaneCore::ConfigItem.new(key: :project_root,
+                                       env_name: "PROJECT_ROOT",
+                                       description: "Folder hosting the package.json",
+                                       optional: true,
+                                       type: String,
+                                       conflicting_options: [:package_path]),
           FastlaneCore::ConfigItem.new(key: :options,
                                        env_name: "YARN_OPTIONS",
                                        description: "Options to pass to Yarn",
@@ -72,7 +80,6 @@ module Fastlane
                                        optional: true,
                                        default_value: false,
                                        is_string: false)
-
         ]
       end
 

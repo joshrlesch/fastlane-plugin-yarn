@@ -8,13 +8,16 @@ module Fastlane
       attr_accessor :commands
       attr_accessor :options
       attr_accessor :package_path
+      attr_accessor :project_root
       attr_accessor :yarn
 
-      def initialize(package_path: nil)
+      def initialize(package_path: nil, project_root:nil)
         self.package_path = package_path
 
         if self.package_path
           self.yarn = "cd #{File.dirname(self.package_path)} && yarn"
+        elsif
+          self.yarn = "cd #{self.project_root} && yarn"
         else
           self.yarn = "yarn"
         end

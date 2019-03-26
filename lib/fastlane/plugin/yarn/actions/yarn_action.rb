@@ -60,17 +60,11 @@ module Fastlane
                                        env_name: "YARN_OPTIONS",
                                        description: "Options to pass to Yarn",
                                        optional: true,
-                                       is_string:false,
+                                       is_string: false,
                                        verify_block: ->(value) {
-                                         case value
-                                          when String
-                                            @options = value
-                                          when Array
-                                            @options = value.join(" ")
-                                          else
-                                            UI.user_error! "Invalid option: #{value.inspect}"
-                                          end
-                                          @options = "-- #{@options}" if @option
+                                        case value when String; when Array;
+                                          else  UI.user_error! "Invalid option: #{value.inspect}, must be an Array or String"
+                                        end
                                           }),
           FastlaneCore::ConfigItem.new(key: :auto_install_dependencies,
                                        env_name: "AUTO_INSTALL_DEPENDENCIES",

@@ -1,6 +1,7 @@
 # yarn plugin
 
 [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-yarn)
+[![Gem](https://img.shields.io/gem/v/fastlane-plugin-yarn.svg)](https://rubygems.org/gems/fastlane-plugin-yarn/versions/1.0)
 
 ## Getting Started
 

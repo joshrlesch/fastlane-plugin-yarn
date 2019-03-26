@@ -22,7 +22,7 @@ module Fastlane
 
       # Run a certain action
       def trigger(command: nil, flags: nil, options: nil, print_command: true, print_command_output: true)
-        command = [self.yarn, command, flags, options].compact.join(" ")
+        command = [self.yarn, flags, command, options].compact.join(" ")
         Action.sh(command, print_command: print_command, print_command_output: print_command_output)
       end
 

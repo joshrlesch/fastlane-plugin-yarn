@@ -14,7 +14,7 @@ module Fastlane
         yarn.check_install
 
         if params[:auto_install_dependencies]
-          UI.message("Installign dependecies")
+          UI.message("Installing dependecies")
           yarn.install_dependencies
         end
 
@@ -60,7 +60,18 @@ module Fastlane
                                        env_name: "YARN_OPTIONS",
                                        description: "Options to pass to Yarn",
                                        optional: true,
-                                       type: String),
+                                       is_string:false,
+                                       verify_block: ->(value) {
+                                         case value
+                                          when String
+                                            @options = value
+                                          when Array
+                                            @options = value.join(" ")
+                                          else
+                                            UI.user_error! "Invalid option: #{value.inspect}"
+                                          end
+                                          @options = "-- #{@options}" if @option
+                                          }),
           FastlaneCore::ConfigItem.new(key: :auto_install_dependencies,
                                        env_name: "AUTO_INSTALL_DEPENDENCIES",
                                        description: "Runs yarn install before executing any yarn command",
@@ -70,6 +81,7 @@ module Fastlane
 
         ]
       end
+
 
       def self.is_supported?(platform)
         # Adjust this if your plugin only works for a particular platform (iOS vs. Android, for example)

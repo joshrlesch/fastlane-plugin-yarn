@@ -11,12 +11,13 @@ module Fastlane
       attr_accessor :project_root
       attr_accessor :yarn
 
-      def initialize(package_path: nil, project_root:nil)
+      def initialize(package_path: nil, project_root: nil)
         self.package_path = package_path
+        self.project_root = project_root
 
         if self.package_path
           self.yarn = "cd #{File.dirname(self.package_path)} && yarn"
-        elsif
+        elsif self.project_root
           self.yarn = "cd #{self.project_root} && yarn"
         else
           self.yarn = "yarn"
@@ -49,15 +50,16 @@ module Fastlane
       end
 
       def check_package
-        if self.package_path.nil?
-          package_path = 'package.json'
-        else
+        if self.package_path
           package_path = self.package_path
+        elsif self.project_root
+          package_path = File.join(self.project_root, 'package.json')
+        else
+          package_path = 'package.json'
         end
 
         unless File.exist?(package_path)
-          UI.error("Could not find package.json")
-          raise Errno::ENOENT
+          UI.crash!("Could not find package.json: (#{package_path})")
         end
       end
     end

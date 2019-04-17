@@ -8,13 +8,17 @@ module Fastlane
       attr_accessor :commands
       attr_accessor :options
       attr_accessor :package_path
+      attr_accessor :project_root
       attr_accessor :yarn
 
-      def initialize(package_path: nil)
+      def initialize(package_path: nil, project_root: nil)
         self.package_path = package_path
+        self.project_root = project_root
 
         if self.package_path
           self.yarn = "cd #{File.dirname(self.package_path)} && yarn"
+        elsif self.project_root
+          self.yarn = "cd #{self.project_root} && yarn"
         else
           self.yarn = "yarn"
         end
@@ -22,7 +26,10 @@ module Fastlane
 
       # Run a certain action
       def trigger(command: nil, flags: nil, options: nil, print_command: true, print_command_output: true)
-        command = [self.yarn, command, flags, options].compact.join(" ")
+        unless options == "" || options == [] || options == nil then
+          option_string = options.respond_to?(:join) ? "-- #{options.join(" ")}" : "-- #{options}"
+        end
+        command = [self.yarn, flags, command, option_string].compact.join(" ")
         Action.sh(command, print_command: print_command, print_command_output: print_command_output)
       end
 
@@ -43,15 +50,16 @@ module Fastlane
       end
 
       def check_package
-        if self.package_path.nil?
-          package_path = 'package.json'
-        else
+        if self.package_path
           package_path = self.package_path
+        elsif self.project_root
+          package_path = File.join(self.project_root, 'package.json')
+        else
+          package_path = 'package.json'
         end
 
         unless File.exist?(package_path)
-          UI.error("Could not find package.json")
-          raise Errno::ENOENT
+          UI.crash!("Could not find package.json: (#{package_path})")
         end
       end
     end

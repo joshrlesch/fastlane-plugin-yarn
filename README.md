@@ -1,6 +1,7 @@
 # yarn plugin
 
 [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-yarn)
+[![Gem](https://img.shields.io/gem/v/fastlane-plugin-yarn.svg)](https://rubygems.org/gems/fastlane-plugin-yarn/versions/1.0)
 
 ## Getting Started
 
@@ -38,6 +39,7 @@ Yarn Options
 |                           | perform, e.g. 'add' or    |                           |         |
 |                           | 'upgrade'                 |                           |         |
 | package_path              | Path to package.json file | PACKAGE_PATH              |         |
+| project_root              | package.json folder       | PROJECT_ROOT              |         |
 | options                   | Options to pass to Yarn   | YARN_OPTIONS              |         |
 | auto_install_dependencies | Runs yarn install before  | AUTO_INSTALL_DEPENDENCIES | false   |
 |                           | executing any yarn        |                           |         |

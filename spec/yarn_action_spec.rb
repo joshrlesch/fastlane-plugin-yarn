@@ -25,7 +25,16 @@ describe Fastlane::Actions::YarnAction do
         yarn(command: 'test', options: '--fail-fast', package_path: 'spec/fixtures/package.json')
       end").runner.execute(:test)
 
-      expect(result).to eq("cd spec/fixtures && yarn test -- --fail-fast")
+      expect(result).to eq("cd spec/fixtures && yarn test --fail-fast")
+    end
+    it 'run some script with some option with missing --' do
+      allow(FastlaneCore::FastlaneFolder).to receive(:path).and_return(nil)
+
+      result = Fastlane::FastFile.new.parse("lane :test do
+        yarn(command: 'test', options: 'fail-fast', package_path: 'spec/fixtures/package.json')
+      end").runner.execute(:test)
+
+      expect(result).to eq("cd spec/fixtures && yarn test --fail-fast")
     end
     it 'run some script with some option provided as list' do
       allow(FastlaneCore::FastlaneFolder).to receive(:path).and_return(nil)
@@ -34,10 +43,18 @@ describe Fastlane::Actions::YarnAction do
         yarn(command: 'test', options: ['--fail-fast', 'please'], package_path: 'spec/fixtures/package.json')
       end").runner.execute(:test)
 
-      expect(result).to eq("cd spec/fixtures && yarn test -- --fail-fast please")
+      expect(result).to eq("cd spec/fixtures && yarn test --fail-fast --please")
+    end
+    it 'run some script with some option provided as list, one with param value' do
+      allow(FastlaneCore::FastlaneFolder).to receive(:path).and_return(nil)
+
+      result = Fastlane::FastFile.new.parse("lane :test do
+        yarn(command: 'test', options: ['--fail-fast please', '--verbose'], package_path: 'spec/fixtures/package.json')
+      end").runner.execute(:test)
+
+      expect(result).to eq("cd spec/fixtures && yarn test --fail-fast please --verbose")
     end
     it 'fail if package_path and project root are both provided' do
-
       expect {
         Fastlane::FastFile.new.parse("lane :boom do
           yarn(command: 'test', package_path: 'spec/fixtures/package.json', project_root:'racine')

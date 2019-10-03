@@ -27,10 +27,19 @@ module Fastlane
       # Run a certain action
       def trigger(command: nil, flags: nil, options: nil, print_command: true, print_command_output: true)
         unless options == "" || options == [] || options == nil then
-          option_string = options.respond_to?(:join) ? "-- #{options.join(" ")}" : "-- #{options}"
+          options = format_options(options)
+          option_string = options.respond_to?(:join) ? options.join(" ") : options
         end
         command = [self.yarn, flags, command, option_string].compact.join(" ")
         Action.sh(command, print_command: print_command, print_command_output: print_command_output)
+      end
+
+      def format_options(options)
+        if options.kind_of?(Array)
+          options.map! { |i| i.include?("--") ? i : "--#{i}" }
+        else
+          options.include?("--") ? options : "--#{options}"
+        end
       end
 
       def check_install

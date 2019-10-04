@@ -1,3 +1,19 @@
-lane :test do
-  yarn
+lane :install_packages do
+  yarn(
+    command: 'install'
+  )
+end
+
+lane :run_command_with_options do
+  yarn(
+    command: 'install',
+    options: '--cache-folder ~/cache_folder' # Also accepts array of strings
+  )
+end
+
+lane :run_command_with_different_package_path do
+  yarn(
+    command: 'install',
+    package_path: '../package.json'
+  )
 end

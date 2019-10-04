@@ -1,3 +1,15 @@
 lane :test do
   yarn
 end
+
+lane :yarnVersion do
+  # Example to increment the App-Version via Yarn with additional Parameters
+  yarnVersion = yarn(command: "version --no-git-tag-version --patch")
+  UI.message(yarnVersion)
+end
+
+lane :yarnInstall do
+  # Example to trigger an single `yarn install` command
+  yarn( command: "install")
+end
+
